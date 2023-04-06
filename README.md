@@ -4,6 +4,8 @@
 
 Cái tên Nahida là tôi để cho vui chứ cũng chẳng liên quan gì tới Nahida trong Genshin Impact cả.
 
+Sử dụng tool này online [tại đây](https://powaipichori.github.io/Nahida), hoặc tải tệp `index.html` ở đây về và sử dụng theo mọi cách mà bạn muốn.
+
 ## Tính năng mà không ai để ý tới?
 
 * Thêm các câu hỏi trắc nghiệm, có hỗ trợ đảo thứ tự các câu hỏi và đáp án trong quá trình ôn.
@@ -14,7 +16,7 @@ Cái tên Nahida là tôi để cho vui chứ cũng chẳng liên quan gì tới
 
 ## Lưu ý!
 
-Tool này được tôi làm ra chỉ để cho vui, và mục đích duy nhất tôi tải lên cả trang GitHub này đó là để tôi có thể mở tool này trên máy tính khác chứ không có ý định chia sẻ mã nguồn này ra công khai. Vì tôi chỉ làm nó cho vui và lấy mục đích ôn lại kiến thức là chính nên khả năng bảo mật của tool này là bằng 0, vì vậy không sử dụng tool này cho thi cử chính thức (ai lại dùng tool kiểu này vào thi chính thức chứ?).
+Tool này được tôi làm ra chỉ để cho vui, và mục đích duy nhất tôi tải lên cả trang GitHub này đó là để tôi có thể mở tool này trên thiết bị khác chứ không có ý định chia sẻ mã nguồn này ra công khai ngay từ đầu. Vì tôi chỉ làm nó cho vui và lấy mục đích ôn lại kiến thức là chính nên khả năng bảo mật của tool này là bằng 0, vì vậy không sử dụng tool này cho thi cử chính thức (ai lại dùng tool kiểu này vào thi chính thức chứ?).
 
 **KHÔNG MỞ ISSUES DƯỚI MỌI HÌNH THỨC, VÌ TÔI SẼ KHÔNG SỬA CÁI MÃ NGUỒN NÀY THEO Ý CÁC BẠN ĐÂU KKK**
 
