@@ -1,0 +1,383 @@
+<html>
+    <head>
+        <title>Tool ôn tập trắc nghiệm</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <style>
+            body {
+                max-width: 960px;
+                margin: auto;
+                padding: 10px;
+                background-color: 111111;
+                color: #eeeeee;
+                font-family: "Open Sans";
+                font-size: 9pt;
+            }
+            button {
+                background: transparent;
+                border: 2px solid white;
+                margin: 2px;
+                padding: 10px;
+                color: #eeeeee;
+                font-family: "Open Sans";
+                font-size: 9pt;
+            }
+            input {
+                margin-top: 10px;
+                width: 100%;
+                background: transparent;
+                border: 2px solid white;
+                padding: 10px;
+                color: #eeeeee;
+                font-family: "Open Sans";
+                font-size: 9pt;
+            }
+            select {
+                margin-top: 10px;
+                width: 100%;
+                background: transparent;
+                border: 2px solid white;
+                padding: 10px;
+                color: #eeeeee;
+                font-family: "Open Sans";
+                font-size: 9pt;
+            }
+            textarea {
+                margin-top: 10px;
+                width: 100%;
+                height: 100px;
+                background: transparent;
+                border: 2px solid white;
+                padding: 10px;
+                color: #eeeeee;
+                font-family: "Open Sans";
+                font-size: 9pt;
+            }
+            a {
+                color: #eeeeee;
+                font-family: "Open Sans";
+                font-size: 9pt;
+                text-decoration: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="tracnghiem-main">
+            <h1>Ôn trắc nghiệm</h1>
+            <hr>
+            <h2>Dữ liệu câu hỏi</h2>
+            <p id="tracnghiem-questionCount">0 câu hỏi đã được thêm.</p>
+            <p style="text-align: center">
+                <button onclick="TracNghiem.beginTest()" style="width: 200px">Bắt đầu ôn</button>
+            </p>
+            <hr>
+            <h2>Thêm câu hỏi mới</h2>
+            <textarea id="tracnghiem-questionContent" placeholder="Nhập nội dung câu hỏi"></textarea><br>
+            <div style="display: flex">
+                <input type="radio" name="correctAnswer" style="margin-right: 10px; width: 48px" id="tracnghiem-isAnswer1Correct" />
+                <input id="tracnghiem-firstAnswer" placeholder="Nhập đáp án thứ nhất" />
+            </div>
+            <div style="display: flex">
+                <input type="radio" name="correctAnswer" style="margin-right: 10px; width: 48px" id="tracnghiem-isAnswer2Correct" />
+                <input id="tracnghiem-secondAnswer" placeholder="Nhập đáp án thứ hai" />
+            </div>
+            <div style="display: flex">
+                <input type="radio" name="correctAnswer" style="margin-right: 10px; width: 48px" id="tracnghiem-isAnswer3Correct" />
+                <input id="tracnghiem-thirdAnswer" placeholder="Nhập đáp án thứ ba" />
+            </div>
+            <div style="display: flex">
+                <input type="radio" name="correctAnswer" style="margin-right: 10px; width: 48px" id="tracnghiem-isAnswer4Correct" />
+                <input id="tracnghiem-fourthAnswer" placeholder="Nhập đáp án thứ tư" />
+            </div>
+            <p>Tick vào 1 đáp án để cho đáp án đó làm đáp án đúng của câu hỏi.</p>
+            <p style="display: flex"><input type="checkbox" id="tracnghiem-keepAnswerOrder" style="margin: 0; width: 48px" /> Giữ nguyên thứ tự của đáp án</p>
+            <p style="text-align: center">
+                <button onclick="TracNghiem.addQuestion()" style="width: 200px">Thêm câu hỏi</button>
+                <button onclick="TracNghiem.clearInputFields()" style="width: 200px">Nhập lại</button>
+            </p>
+            <hr>
+            <h2>Nhập/Xuất câu hỏi</h2>
+            <p>Nhập và xuất dữ liệu dưới dạng JSON. Dữ liệu câu hỏi sẽ được lưu vào Bộ nhớ Cục bộ (Local Storage) để lưu dữ liệu câu hỏi cho những lần truy cập tiếp theo.</p>
+            <p><textarea id="tracnghiem-jsonData" style="height: 300px"></textarea></p>
+            <p><button onclick="TracNghiem.importQuestions()" style="width: 100px">Nhập</button> <button onclick="TracNghiem.exportQuestions()" style="width: 100px">Xuất</button></p>
+            <hr>
+            <h2>Tải lại từ bộ nhớ cục bộ</h2>
+            <p>Chọn bộ câu hỏi đã lưu trong bộ nhớ cục bộ để tải lại:</p>
+            <p><select id="tracnghiem-loadCustomName"></select></p>
+            <p><button onclick="TracNghiem.loadCustomName()">Tải lại</button> <button onclick="TracNghiem.deleteCustomName()">Xoá</button></p>
+            <hr>
+            <h2>Lưu vào bộ nhớ cục bộ</h2>
+            <p>Nhập tên của bộ câu hỏi tuỳ ý bạn vào đây:</p>
+            <p><input id="tracnghiem-saveCustomName" /></p>
+            <p><button onclick="TracNghiem.saveCustomName()">Lưu</button></p>
+        </div>
+        <div id="tracnghiem-test" style="display: none">
+            <h1>Ôn trắc nghiệm</h1>
+            <hr>
+            <h3>Câu hỏi <span id="tracnghiem-test-questionNo">1</span>:</h3>
+            <p id="tracnghiem-test-questionContent">No content</p>
+            <br>
+            <p><button style="width: 100%; text-align: left" onclick="TracNghiem.answer(0)" id="tracnghiem-test-answer1">Answer 1</button></p>
+            <p><button style="width: 100%; text-align: left" onclick="TracNghiem.answer(1)" id="tracnghiem-test-answer2">Answer 2</button></p>
+            <p><button style="width: 100%; text-align: left" onclick="TracNghiem.answer(2)" id="tracnghiem-test-answer3">Answer 3</button></p>
+            <p><button style="width: 100%; text-align: left" onclick="TracNghiem.answer(3)" id="tracnghiem-test-answer4">Answer 4</button></p>
+        </div>
+        <div id="tracnghiem-result" style="display: none">
+            <h1>Kết quả ôn trắc nghiệm</h1>
+            <hr>
+            <p>Bạn đã hoàn thành phần ôn trắc nghiệm với tổng số điểm:</p>
+            <p style="text-align: center; font-size: 35pt; font-weight: bold" id="tracnghiem-result-score">0/0</p>
+            <hr>
+            <h2>Các câu sai</h2>
+            <div id="tracnghiem-result-wrongAnswers"></div>
+        </div>
+        <hr>
+        <p><small style="color: rgb(184, 184, 184)">&copy; 2023 Mamahiru.</small></p>
+    </body>
+    <script>
+        function getId(e) {
+            return document.getElementById(e);
+        }
+        function getClass(e) {
+            return document.getElementsByClassName(e);
+        }
+        function getTag(e) {
+            return document.getElementsByTagName(e);
+        }
+        function getName(e) {
+            return document.getElementsByName(e);
+        }
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        var TracNghiem = {
+            questions: [],
+            init: function() {
+                getId("tracnghiem-main").style.display = "block";
+                try {
+                    var savedData = this.loadQuestions();
+                    if (savedData) this.questions = JSON.parse(savedData);
+                    getId("tracnghiem-jsonData").value = JSON.stringify(this.questions);
+                }
+                catch (err) {
+                    console.error(err);
+                    alert("Không thể tải dữ liệu câu hỏi trắc nghiệm đã lưu trước đó.\n" + err);
+                    this.deleteQuestions();
+                }
+                this.loadAllCustomNames();
+                this.updateQuestionCount();
+            },
+            loadQuestions: function() {
+                return window.localStorage.getItem("tracnghiemQuestions");
+            },
+            saveQuestions: function(data) {
+                window.localStorage.setItem("tracnghiemQuestions", (typeof(data) == "string" ? data : JSON.stringify(data)));
+            },
+            deleteQuestions: function() {
+                window.localStorage.removeItem("tracnghiemQuestions");
+            },
+            importQuestions: function() {
+                var json = getId("tracnghiem-jsonData").value;
+                if (!json) return alert("Vui lòng nhập dữ liệu câu hỏi dưới dạng JSON.");
+                try {
+                    var data = JSON.parse(json);
+                    this.questions = data;
+                    this.saveQuestions(this.questions);
+                    alert("Đã cập nhật lại dữ liệu câu hỏi. Số câu hỏi trong dữ liệu mới là " + this.questions.length + " câu hỏi.");
+                    this.updateQuestionCount();
+                }
+                catch (err) {
+                    console.error(err);
+                    alert("Dữ liệu câu hỏi nhập vào không hợp lệ.");
+                }
+            },
+            exportQuestions: function() {
+                getId("tracnghiem-jsonData").value = JSON.stringify(this.questions);
+            },
+            addQuestion: function() {
+                var content = getId("tracnghiem-questionContent").value,
+                    answers = [getId("tracnghiem-firstAnswer").value, getId("tracnghiem-secondAnswer").value, getId("tracnghiem-thirdAnswer").value, getId("tracnghiem-fourthAnswer").value],
+                    correctAnswer = null;
+                if (!content) return alert("Vui lòng nhập nội dung câu hỏi.");
+                for (var i = 0; i < 4; i++) {
+                    if (!answers[i]) return alert("Vui lòng nhập câu trả lời số " + (i + 1) + ".");
+                    if (getId("tracnghiem-isAnswer" + (i + 1).toString() + "Correct").checked) {
+                        correctAnswer = answers[i];
+                        break;
+                    }
+                }
+                this.questions.push({id: this.questions.length + 1, content, answers, correctAnswer, keepOrder: getId("tracnghiem-keepAnswerOrder").checked ? true : false});
+                this.saveQuestions(this.questions);
+                this.exportQuestions();
+                alert("Đã nhập 1 câu hỏi.");
+                this.clearInputFields();
+                this.updateQuestionCount();
+            },
+            updateQuestionCount: function() {
+                getId("tracnghiem-questionCount").innerText = this.questions.length + " câu hỏi đã được thêm.";
+            },
+            clearInputFields: function() {
+                for (var i = 0; i < 4; i++) {
+                    getId("tracnghiem-isAnswer" + (i + 1).toString() + "Correct").checked = false;
+                }
+                getId("tracnghiem-keepAnswerOrder").checked = false;
+                getId("tracnghiem-firstAnswer").value = "";
+                getId("tracnghiem-secondAnswer").value = "";
+                getId("tracnghiem-thirdAnswer").value = "";
+                getId("tracnghiem-fourthAnswer").value = "";
+                getId("tracnghiem-questionContent").value = "";
+            },
+            beginTest: function() {
+                if (!this.questions.length) return alert("Bạn chưa thêm câu hỏi nào cả.");
+                var range = prompt("Nhập khoảng câu hỏi bạn muốn ôn (ví dụ như 1-15 để ôn từ câu 1 đến câu 15), nhập all để kiểm tra tất cả các câu và bỏ trống để huỷ lệnh bắt đầu ôn.", "all");
+                if (!range) return;
+                if (range == "all") this.testQuestions = Object.create(this.questions);
+                else {
+                    try {
+                        var ranges = range.split("-");
+                        if (ranges.length != 2) return alert("Khoảng nhập vào không hợp lệ.");
+                        this.testQuestions = [];
+                        for (var i = parseInt(ranges[0]) - 1; i < parseInt(ranges[1]); i++) this.testQuestions.push(this.questions[i]);
+                    }
+                    catch (err) {
+                        console.error(err);
+                        alert("Không thể bắt đầu ôn trắc nghiệm.\n" + err);
+                    }
+                }
+                this.testQuestionCount = this.testQuestions.length;
+                // Begin displaying new question
+                this.questionIndex = random(0, this.testQuestions.length - 1);
+                this.currentQuestion = this.testQuestions[this.questionIndex];
+                this.answeredQuestionCount = 0;
+                this.score = 0;
+                this.wrongAnswers = [];
+                var currentQuestion = this.currentQuestion;
+                getId("tracnghiem-test-questionNo").innerText = (this.answeredQuestionCount + 1).toString();
+                getId("tracnghiem-test-questionContent").innerText = currentQuestion.content;
+                this.finalAnswerList = [];
+                if (!currentQuestion.keepOrder) {
+                    var tempAnswers = [];
+                    for (var i = 0; i < 4; i++) {
+                        tempAnswers.push({
+                            realIndex: i,
+                            answer: currentQuestion.answers[i]
+                        })
+                    }
+                    for (var i = 0; i < 4; i++) {
+                        var index = random(0, tempAnswers.length - 1);
+                        getId("tracnghiem-test-answer" + (i + 1).toString()).innerText = tempAnswers[index].answer;
+                        this.finalAnswerList.push({id: currentQuestion.id, index: tempAnswers[index].realIndex});
+                        tempAnswers.splice(index, 1);
+                    }
+                }
+                else {
+                    for (var i = 0; i < 4; i++) {
+                        getId("tracnghiem-test-answer" + (i + 1).toString()).innerText = currentQuestion.answers[i];
+                        this.finalAnswerList.push({id: currentQuestion.id, index: i});
+                    }
+                }
+                getId("tracnghiem-main").style.display = "none";
+                getId("tracnghiem-test").style.display = "block";
+            },
+            answer: function(ans) {
+                var finalAnswer = this.finalAnswerList[ans],
+                    originalQuestion = this.questions.filter(q => q.id == finalAnswer.id)[0];
+                if (originalQuestion.answers[finalAnswer.index] == originalQuestion.correctAnswer) this.score++;
+                else {
+                    this.wrongAnswers.push({
+                        id: this.answeredQuestionCount + 1,
+                        realId: originalQuestion.id,
+                        content: originalQuestion.content,
+                        answer: originalQuestion.answers[finalAnswer.index],
+                        correctAnswer: originalQuestion.correctAnswer
+                    });
+                }
+                this.testQuestions.splice(this.questionIndex, 1);
+                if (this.testQuestions.length > 0) {
+                    // Begin displaying new question
+                    this.questionIndex = random(0, this.testQuestions.length - 1);
+                    this.currentQuestion = this.testQuestions[this.questionIndex];
+                    this.answeredQuestionCount++;
+                    var currentQuestion = this.currentQuestion;
+                    getId("tracnghiem-test-questionNo").innerText = (this.answeredQuestionCount + 1).toString();
+                    getId("tracnghiem-test-questionContent").innerText = currentQuestion.content;
+                    this.finalAnswerList = [];
+                    if (!currentQuestion.keepOrder) {
+                        var tempAnswers = [];
+                        for (var i = 0; i < 4; i++) {
+                            tempAnswers.push({
+                                realIndex: i,
+                                answer: currentQuestion.answers[i]
+                            })
+                        }
+                        for (var i = 0; i < 4; i++) {
+                            var index = random(0, tempAnswers.length - 1);
+                            getId("tracnghiem-test-answer" + (i + 1).toString()).innerText = tempAnswers[index].answer;
+                            this.finalAnswerList.push({id: currentQuestion.id, index: tempAnswers[index].realIndex});
+                            tempAnswers.splice(index, 1);
+                        }
+                    }
+                    else {
+                        for (var i = 0; i < 4; i++) {
+                            getId("tracnghiem-test-answer" + (i + 1).toString()).innerText = currentQuestion.answers[i];
+                            this.finalAnswerList.push({id: currentQuestion.id, index: i});
+                        }
+                    }
+                }
+                else this.finalizeResult();
+            },
+            finalizeResult: function() {
+                getId("tracnghiem-result-score").innerText = this.score.toString() + "/" + this.testQuestionCount.toString();
+                if (this.wrongAnswers.length > 0) {
+                    var html = "";
+                    for (var i = 0; i < this.wrongAnswers.length; i++) {
+                        var wrongAnswer = this.wrongAnswers[i];
+                        html += "<hr><h3>Câu hỏi số " + wrongAnswer.id + " (câu hỏi số " + wrongAnswer.realId + " trong bộ dữ liệu câu hỏi):</h2><p>" + wrongAnswer.content.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") + "</p><p><b>Bạn trả lời:</b> " + wrongAnswer.answer + "</p><p><b>Đáp án đúng:</b> " + wrongAnswer.correctAnswer + "</p>";
+                    }
+                    getId("tracnghiem-result-wrongAnswers").innerHTML = html;
+                }
+                else getId("tracnghiem-result-wrongAnswers").innerHTML = "<p style='color: lightgreen'>Bạn không trả lời sai câu nào cả.</p>";
+                getId("tracnghiem-test").style.display = "none";
+                setTimeout(() => {
+                    getId("tracnghiem-result").style.display = "block";
+                }, 1000);
+            },
+            loadAllCustomNames: function() {
+                var select = getId("tracnghiem-loadCustomName");
+                select.innerHTML = "";
+                for (var i = 0; i < window.localStorage.length; i++) {
+                    var name = window.localStorage.key(i);
+                    if (!name.startsWith("database_")) continue;
+                    var option = document.createElement("option");
+                    option.value = name;
+                    option.text = name.replace("database_", "");
+                    select.add(option);
+                }
+            },
+            saveCustomName: function() {
+                var customName = getId("tracnghiem-saveCustomName").value, jsonData = getId("tracnghiem-jsonData").value;
+                if (!customName || !jsonData) return alert("Vui lòng nhập đủ tên và dữ liệu của bộ câu hỏi.");
+                window.localStorage.setItem("database_" + customName, jsonData);
+                this.loadAllCustomNames();
+                alert("Đã lưu thành công.");
+            },
+            loadCustomName: function() {
+                var customName = getId("tracnghiem-loadCustomName").value;
+                if (!customName) return alert("Vui lòng chọn một bộ câu hỏi.");
+                getId("tracnghiem-jsonData").value = window.localStorage.getItem(customName);
+                getId("tracnghiem-saveCustomName").value = customName.replace("database_", "");
+                alert("Đã tải lại dữ liệu câu hỏi. Nhấn nút Nhập để nhập bộ câu hỏi đã tải vào dữ liệu câu hỏi.");
+            },
+            deleteCustomName: function() {
+                var customName = getId("tracnghiem-loadCustomName").value;
+                if (!customName) return alert("Vui lòng chọn một bộ câu hỏi.");
+                if (!confirm("Xác nhận muốn xoá bộ câu hỏi này không?")) return;
+                window.localStorage.removeItem(customName);
+                this.loadAllCustomNames();
+                getId("tracnghiem-saveCustomName").value = "";
+                alert("Đã xoá thành công.");
+            }
+        };
+        TracNghiem.init();
+    </script>
+</html>
