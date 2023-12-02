@@ -1,3 +1,5 @@
+**Tool này sẽ không còn được cập nhật nữa, vì tại sao lại phải cập nhật cái này chứ?<br>Bản thân tôi cũng đã ra trường rồi, cũng chẳng có ai quan tâm đến cái source code này nên archive cho lành.**
+
 # Tool ôn thi trắc nghiệm
 
 Đây là một web, hay nói đúng hơn là 1 tool ngắn do tôi code ra vừa là để cho vui, vừa để phục vụ cho chính mình trong việc ôn thi trắc nghiệm. Tool này không hoàn hảo nhưng nó có thể hoạt động không cần Internet và bất cứ thứ gì, chỉ cần 1 file HTML và 1 ứng dụng trình duyệt là đủ rồi.
